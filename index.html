@@ -84,10 +84,11 @@
 </head>
 <body>
 
-   <img src="logogiglio.png" alt="Logo Residencial" class="logo-topo">
+   <img src="C:/Users/fndfa/Desktop/site%20lâmpada/logogiglio.png" alt="Logo Residencial" class="logo-topo">
 
     <h1>RESIDENCIAL COMENDADOR SILVIO GIGLIO</h1>
-    <p>O status atual é: <span id="status-texto" style="font-weight: bold; font-size: 22px;">Carregando...</span></p>
+    
+    <p>O status real do exaustor é: <span id="status-texto" style="font-weight: bold; font-size: 22px;">Carregando...</span></p>
     
     <div class="container-botoes">
         <button class="btn btn-ligar" onclick="ligarExaustor()">LIGAR</button>
@@ -117,20 +118,26 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Escuta as mudanças no banco de dados em tempo real e atualiza a interface
-        db.ref('/lampada').on('value', (snapshot) => {
-            const statusAtual = snapshot.val();
+        // Escuta o feedback real enviado pelo ESP32 (/status_exaustor)
+        db.ref('/status_exaustor').on('value', (snapshot) => {
+            const statusSensor = snapshot.val();
             const texto = document.getElementById('status-texto');
             const lampadaVisual = document.getElementById('lampada-visual');
 
-            if (statusAtual === 1) {
-                texto.innerText = "LIGADO";
-                texto.style.color = "#4CAF50";
+            if (statusSensor === "funcionando") {
+                texto.innerText = "FUNCIONANDO";
+                texto.style.color = "#4CAF50";       // Texto Verde
                 lampadaVisual.className = "lampada acesa"; // Acende a lâmpada na tela
-            } else {
-                texto.innerText = "DESLIGADO";
-                texto.style.color = "#f44336";
+            } 
+            else if (statusSensor === "não funcionando") {
+                texto.innerText = "NÃO FUNCIONANDO";
+                texto.style.color = "#f44336";       // Texto Vermelho
                 lampadaVisual.className = "lampada";       // Apaga a lâmpada na tela
+            } 
+            else {
+                texto.innerText = "SEM SINAL";
+                texto.style.color = "#777";
+                lampadaVisual.className = "lampada";       // Mantém apagada se não houver dados
             }
         });
 
