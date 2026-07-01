@@ -16,8 +16,8 @@
         /* Estilo da Imagem no Topo */
         .logo-topo {
             display: block;
-            margin: 0 auto 20px auto; /* Centraliza horizontalmente e adiciona margem inferior */
-            max-width: 200px;        /* Ajuste a largura máxima conforme necessário */
+            margin: 0 auto 20px auto; 
+            max-width: 200px;        
             height: auto;
         }
         
@@ -84,7 +84,7 @@
 </head>
 <body>
 
-   <img src="C:/Users/fndfa/Desktop/site%20lâmpada/logogiglio.png" alt="Logo Residencial" class="logo-topo">
+   <img src="logogiglio.png" alt="Logo Residencial" class="logo-topo">
 
     <h1>RESIDENCIAL COMENDADOR SILVIO GIGLIO</h1>
     
@@ -126,18 +126,18 @@
 
             if (statusSensor === "funcionando") {
                 texto.innerText = "FUNCIONANDO";
-                texto.style.color = "#4CAF50";       // Texto Verde
-                lampadaVisual.className = "lampada acesa"; // Acende a lâmpada na tela
+                texto.style.color = "#4CAF50";       
+                lampadaVisual.className = "lampada acesa"; 
             } 
             else if (statusSensor === "não funcionando") {
                 texto.innerText = "NÃO FUNCIONANDO";
-                texto.style.color = "#f44336";       // Texto Vermelho
-                lampadaVisual.className = "lampada";       // Apaga a lâmpada na tela
+                texto.style.color = "#f44336";       
+                lampadaVisual.className = "lampada";       
             } 
             else {
                 texto.innerText = "SEM SINAL";
                 texto.style.color = "#777";
-                lampadaVisual.className = "lampada";       // Mantém apagada se não houver dados
+                lampadaVisual.className = "lampada";       
             }
         });
 
