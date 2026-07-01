@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle da Lâmpada Mundial</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #222; color: #fff; padding-top: 50px; }
+        .btn { padding: 20px 40px; font-size: 24px; cursor: pointer; border: none; border-radius: 10px; transition: 0.3s; }
+        .aceso { background-color: #ffeb3b; color: #000; box-shadow: 0 0 20px #ffeb3b; }
+        .apagado { background-color: #555; color: #fff; }
+    </style>
+    <!-- Carrega o SDK do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+
+    <h1>Acionamento do Exaustor</h1>
+    <p>O status atual é: <span id="status-texto">Carregando...</span></p>
+    
+    <button id="botao-lampada" class="btn apagado" onclick="alternarLampada()">Aguardando...</button>
+
+    <script>
+        // CONFIGURAÇÃO DO SEU FIREBASE (Cole os dados que o Firebase te der aqui)
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU-PROJETO.firebaseapp.com",
+            databaseURL: "https://SEU-PROJETO.firebaseio.com",
+            projectId: "SEU-PROJETO",
+            storageBucket: "SEU-PROJETO.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:1234:web:1234"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        let statusAtual = 0;
+
+        // Escuta as mudanças no banco de dados em tempo real
+        db.ref('/lampada').on('value', (snapshot) => {
+            statusAtual = snapshot.val();
+            const botao = document.getElementById('botao-lampada');
+            const texto = document.getElementById('status-texto');
+
+            if (statusAtual === 1) {
+                texto.innerText = "ACESO";
+                botao.innerText = "DESLIGAR";
+                botao.className = "btn aceso";
+            } else {
+                texto.innerText = "APAGADO";
+                botao.innerText = "LIGAR";
+                botao.className = "btn apagado";
+            }
+        });
+
+        // Função que altera o valor no banco ao clicar no botão
+        function alternarLampada() {
+            let novoStatus = statusAtual === 1 ? 0 : 1;
+            db.ref('/').update({ lampada: novoStatus });
+        }
+    </script>
+</body>
+</html>
